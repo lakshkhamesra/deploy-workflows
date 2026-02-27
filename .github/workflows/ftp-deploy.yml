@@ -1,0 +1,29 @@
+name: Reusable FTP Deploy
+
+on:
+  workflow_call:
+    inputs:
+      server_dir:
+        required: true
+        type: string
+    secrets:
+      ftp_server:
+        required: true
+      ftp_username:
+        required: true
+      ftp_password:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          server-dir: ${{ inputs.server_dir }}
